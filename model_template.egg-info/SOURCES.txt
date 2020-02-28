@@ -1,0 +1,12 @@
+README.md
+setup.py
+deepcluster/__init__.py
+deepcluster/alexnet.py
+model_template.egg-info/PKG-INFO
+model_template.egg-info/SOURCES.txt
+model_template.egg-info/dependency_links.txt
+model_template.egg-info/not-zip-safe
+model_template.egg-info/requires.txt
+model_template.egg-info/top_level.txt
+test/__init__.py
+test/test_models.py

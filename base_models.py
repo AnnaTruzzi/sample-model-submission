@@ -1,3 +1,11 @@
+import functools
+import torch
+from collections import OrderedDict
+
+from deepcluster import alexnet 
+from model_tools.activations.pytorch import PytorchWrapper
+from model_tools.activations.pytorch import load_preprocess_images
+
 from test import test_models
 
 """
@@ -11,7 +19,7 @@ def get_model_list():
     If the submission contains only one model, return a one item list.
     :return: a list of model string names
     """
-    return []
+    return ['deepcluster','deepcluster_untrained']
 
 
 def get_model(name):
@@ -23,7 +31,22 @@ def get_model(name):
     :param name: the name of the model to fetch
     :return: the model instance
     """
-    return
+    if name == 'deepcluster':
+        model = alexnet(sobel=True, bn=True, out=10000) 
+        checkpoint = torch.load('deepcluster/checkpoint_dc.pth.tar')['state_dict']
+        checkpoint_new = OrderedDict()
+        for k, v in checkpoint.items():
+            name = k.replace(".module", '') # remove 'module.' of dataparallel
+            checkpoint_new[name]=v
+        model.load_state_dict(checkpoint_new)
+        model.cuda()
+    if name == 'deepcluster_untrained':
+        model = alexnet(sobel=True, bn=True, out=10000) 
+        model.cuda()
+    preprocessing = functools.partial(load_preprocess_images, image_size=224)
+    wrapper = PytorchWrapper(identifier='deepcluster', model=model, preprocessing=preprocessing)
+    wrapper.image_size = 224
+    return wrapper
 
 
 def get_layers(name):
@@ -36,7 +59,8 @@ def get_layers(name):
     :param name: the name of the model, to return the layers for
     :return: a list of strings containing all layers, that should be considered as brain area.
     """
-    return []
+#    assert name == 'deepcluster'
+    return ['features.2','features.6','features.10','features.13','features.16','classifier.2','classifier.5']
 
 if __name__ == '__main__':
     test_models.test_base_models(__name__)

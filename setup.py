@@ -9,7 +9,9 @@ with open('README.md') as readme_file:
 requirements = [
     "model-tools @ git+https://github.com/brain-score/model-tools",
     "numpy",
-    "result_caching @ git+https://github.com/mschrimpf/result_caching"
+    "result_caching @ git+https://github.com/mschrimpf/result_caching",
+    "torchvision>=0.5.0",
+    "collections"
 ]
 
 setup(
