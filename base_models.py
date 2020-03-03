@@ -60,7 +60,10 @@ def get_layers(name):
     :return: a list of strings containing all layers, that should be considered as brain area.
     """
 #    assert name == 'deepcluster'
-    return ['features.2','features.6','features.10','features.13','features.16','classifier.2','classifier.5']
+    return ['_model.features[2]','_model.features[6]','_model.features[10]','_model.features[13]','_model.features[16]','_model.classifier[2]','_model.classifier[5]']
 
 if __name__ == '__main__':
     test_models.test_base_models(__name__)
+
+
+
